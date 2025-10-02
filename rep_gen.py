@@ -2,77 +2,77 @@ from rep_tools import (
     load_data,
     show_menu,
     MONTHS,
-    relatorio_mensal_geral,
-    relatorio_anual_geral,
-    relatorio_paciente_mes,
-    relatorio_paciente_anual,
-    relatorio_totais_por_paciente,
-    relatorio_personalizado_por_periodo
+    monthly_general_report,
+    yearly_general_report,
+    patient_monthly_report,
+    patient_yearly_report,
+    totals_per_patient_report,
+    custom_period_report
 )
 from datetime import datetime
 
 def main():
-    dados = load_data()
+    data = load_data()
 
-    if not dados:
-        print("❌ Nenhum dado carregado. Verifique o arquivo Excel.")
+    if not data:
+        print("❌ No data loaded. Check the Excel file.")
         return
 
     while True:
         show_menu()
-        opcao = input("\nEscolha uma opção: ")
+        option = input("\nChoose an option: ")
 
-        if opcao == "1":
-            # Relatório do mês atual
-            hoje = datetime.today()
-            mes = hoje.month
-            ano = hoje.year
-            print(f"\n📅 Gerando relatório geral de {MONTHS[mes]} de {ano}...")
-            relatorio_mensal_geral(dados, mes, ano)
+        if option == "1":
+            # Current month report
+            today = datetime.today()
+            month = today.month
+            year = today.year
+            print(f"\n📅 Generating general report for {MONTHS[month]} {year}...")
+            monthly_general_report(data, month, year)
 
-        elif opcao == "2":
-            # Relatório de um paciente (mensal ou anual)
-            paciente = input("Nome do paciente: ")
-            esc = input("Deseja relatório [1] Mensal ou [2] Anual? ")
+        elif option == "2":
+            # Patient report (monthly or yearly)
+            patient = input("Patient name: ")
+            choice = input("Do you want a [1] Monthly or [2] Yearly report? ")
 
-            if esc == "1":
-                mes = int(input("Mês (1-12): "))
-                ano = int(input("Ano: "))
-                relatorio_paciente_mes(dados, paciente, mes, ano)
-            elif esc == "2":
-                ano = int(input("Ano: "))
-                relatorio_paciente_anual(dados, paciente, ano)
+            if choice == "1":
+                month = int(input("Month (1-12): "))
+                year = int(input("Year: "))
+                patient_monthly_report(data, patient, month, year)
+            elif choice == "2":
+                year = int(input("Year: "))
+                patient_yearly_report(data, patient, year)
             else:
-                print("⚠️ Opção inválida.")
+                print("⚠️ Invalid option.")
 
-        elif opcao == "3":
-            # Relatório anual geral
-            ano = int(input("Ano: "))
-            relatorio_anual_geral(dados, ano)
+        elif option == "3":
+            # General yearly report
+            year = int(input("Year: "))
+            yearly_general_report(data, year)
 
-        elif opcao == "4":
-            # Totais por paciente no ano
-            ano = int(input("Ano: "))
-            relatorio_totais_por_paciente(dados, ano)
+        elif option == "4":
+            # Totals per patient in the year
+            year = int(input("Year: "))
+            totals_per_patient_report(data, year)
 
-        elif opcao == "5":
-            # Relatório personalizado por intervalo
-            data_inicio = input("Data inicial (YYYY-MM-DD): ")
-            data_fim = input("Data final (YYYY-MM-DD): ")
-            filtrar = input("Deseja filtrar por paciente específico? (s/n): ").lower()
+        elif option == "5":
+            # Custom report by date range
+            start_date = input("Start date (YYYY-MM-DD): ")
+            end_date = input("End date (YYYY-MM-DD): ")
+            filter_patient = input("Do you want to filter by a specific patient? (y/n): ").lower()
 
-            if filtrar == "s":
-                paciente = input("Nome do paciente: ")
-                relatorio_personalizado_por_periodo(dados, data_inicio, data_fim, paciente)
+            if filter_patient == "y":
+                patient = input("Patient name: ")
+                custom_period_report(data, start_date, end_date, patient)
             else:
-                relatorio_personalizado_por_periodo(dados, data_inicio, data_fim)
+                custom_period_report(data, start_date, end_date)
 
-        elif opcao == "6":
-            print("Encerrando o programa.")
+        elif option == "6":
+            print("Closing the program.")
             break
 
         else:
-            print("❌ Opção inválida. Tente novamente.")
+            print("❌ Invalid option. Try again.")
 
 if __name__ == "__main__":
     main()
