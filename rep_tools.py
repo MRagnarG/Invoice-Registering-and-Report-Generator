@@ -118,7 +118,8 @@ def monthly_general_report(data, month, year):
         lines.append(f"- {method}: {count}x")
 
     top_patient = patients.most_common(1)[0]  # (name, qty)
-    lines.append(f"\n👤 Most attended patient: {top_patient[0]} ({top_patient[1]} appointments)")
+    lines.append(f"\n👤 Most attended patient: {top_patient[0]}, " + 
+                f"({top_patient[1]} appointments)")
     
     file_name = f"monthly_report_{month:02d}_{year}.txt"
     save_and_print(file_name, lines) 
@@ -134,7 +135,8 @@ def yearly_general_report(data, year):
 
     for invoice in data:
         try:
-            payment_date = datetime.strptime(invoice["payment_date"], "%d/%m/%Y")
+            payment_date = datetime.strptime(invoice["payment_date"],
+                                            " +" "%d/%m/%Y")
         except Exception:
             continue
 
@@ -162,8 +164,10 @@ def yearly_general_report(data, year):
     lines.append(f"Total invoices: {total_invoices}")
     lines.append(f"Total received: R$ {total_value:.2f}")
     lines.append(f"Monthly average: R$ {monthly_avg:.2f}")
-    lines.append(f"Highest revenue month: {MONTHS[highest_month]} - R$ {highest_value:.2f}")
-    lines.append(f"Lowest revenue month: {MONTHS[lowest_month]} - R$ {lowest_value:.2f}")
+    lines.append(f"Highest revenue month: {MONTHS[highest_month]} -" +
+                f" R$ {highest_value:.2f}")
+    lines.append(f"Lowest revenue month: {MONTHS[lowest_month]} - " + 
+                f"R$ {lowest_value:.2f}")
     lines.append(f"Most used payment method: {most_used_payment}")
     lines.append("")
     lines.append("Values per month:")
@@ -184,12 +188,15 @@ def patient_monthly_report(data, patient, month, year):
         payment_date = datetime.strptime(invoice["payment_date"], "%d/%m/%Y")
 
         if payment_date.month == month and payment_date.year == year:
-            if invoice.get("patient/dependent", "").lower() == patient.lower():
+            if invoice.get("patient/dependent", "").lower() == (
+                patient.lower()):
                 n = {
                     "Invoice Number": invoice.get("invoice_number", "N/A"),
-                    "Appointment Date": invoice.get("appointment_date", "N/A"),
+                    "Appointment Date": invoice.get("appointment_date", 
+                                                    "N/A"),
                     "Payment Date": invoice.get("payment_date", "N/A"),
-                    "Patient/Dependent": invoice.get("patient/dependent", "Unknown"),
+                    "Patient/Dependent": invoice.get("patient/dependent", 
+                                                     "Unknown"),
                     "Payer CPF": invoice.get("payer_CPF", "N/A"),
                     "Dependent CPF": invoice.get("dependent_CPF", "N/A"),
                     "Amount": invoice.get("amount", 0.0),
@@ -206,7 +213,8 @@ def patient_monthly_report(data, patient, month, year):
         print(f"📆 No payments from {patient} recorded in {month:02d}/{year}.")
         return
 
-    lines.append(f"===== 📄 PATIENT REPORT: {patient.upper()} - {month:02d}/{year} =====")
+    lines.append(f"===== 📄 PATIENT REPORT: {patient.upper()} -" +  
+                f"{month:02d}/{year} =====")
     lines.append(f"Total appointments: {total_invoices}")
     lines.append(f"Total paid in the month: R$ {total_value:.2f}")
     lines.append("")
@@ -220,7 +228,9 @@ def patient_monthly_report(data, patient, month, year):
                 lines.append(f"{key}: {value}")
         lines.append("")
 
-    file_name = f"patient_report_{patient.lower().replace(' ', '_')}_{month:02d}_{year}.txt"
+    file_name = (f"patient_report_{patient.lower().replace(' ', '_')}" +
+                 f"_{month:02d}_{year}.txt")
+
     save_and_print(file_name, lines) 
 
     return total_value, total_invoices, transactions
