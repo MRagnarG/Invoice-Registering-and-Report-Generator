@@ -7,9 +7,10 @@ from rep_tools import (
     patient_monthly_report,
     patient_yearly_report,
     totals_per_patient_report,
-    custom_period_report
+    custom_period_report,
 )
 from datetime import datetime
+
 
 def main():
     data = load_data()
@@ -27,7 +28,9 @@ def main():
             today = datetime.today()
             month = today.month
             year = today.year
-            print(f"\n📅 Generating general report for {MONTHS[month]} {year}...")
+            print(
+                f"\n📅 Generating general report for {MONTHS[month]} {year}..."
+            )
             monthly_general_report(data, month, year)
 
         elif option == "2":
@@ -59,7 +62,9 @@ def main():
             # Custom report by date range
             start_date = input("Start date (YYYY-MM-DD): ")
             end_date = input("End date (YYYY-MM-DD): ")
-            filter_patient = input("Do you want to filter by a specific patient? (y/n): ").lower()
+            filter_patient = input(
+                "Do you want to filter by a specific patient? (y/n): "
+            ).lower()
 
             if filter_patient == "y":
                 patient = input("Patient name: ")
@@ -73,6 +78,7 @@ def main():
 
         else:
             print("❌ Invalid option. Try again.")
+
 
 if __name__ == "__main__":
     main()

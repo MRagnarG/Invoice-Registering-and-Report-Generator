@@ -1,6 +1,8 @@
 from datetime import datetime
 
+
 def date_converter(label):
+    
     while True:
         date = input(f"{label} (DD/MM/AAAA): ")
         try:
@@ -17,3 +19,4 @@ def comma_check():
             return float(inp.replace(",", "."))
         except ValueError:
             print("⚠️ Invalid value. Write only numbers.")
+
